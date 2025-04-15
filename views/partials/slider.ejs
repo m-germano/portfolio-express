@@ -1,0 +1,61 @@
+<!-- Slider Esteira de Tecnologias -->
+<div class="slider w-full flex justify-center items-center h-16 overflow-hidden relative bg-[#202020]">
+    <div class="animate-slide flex gap-12 absolute w-max">
+        <% const icons = [
+            "react",
+            "redux",
+            "nodejs",
+            "typescript",
+            "javascript",
+            "vitejs",
+            "html5",
+            "css3",
+            "tailwindcss",
+            "express",
+            "mongodb",
+            "java",
+            "python",
+            "flask",
+            "linux",
+            "nestjs",
+            "postgresql",
+            "mysql",
+            "postman",
+            "insomnia",
+            "figma",
+            "grafana",
+            "git",
+            "github",
+            "bun",
+            "docker",
+            "trello",
+            "wordpress",
+  
+      ]; %>
+  
+      <% for (let i = 0; i < 2; i++) { %> <!-- Duplicar para criar o loop -->
+        <% icons.forEach(icon => { %>
+          <div class="flex items-center justify-center w-20 h-20">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/<%= icon %>/<%= icon %>-original.svg" alt="<%= icon %>" class="w-12 h-12 object-contain" />
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+  
+  <!-- Estilo para animação -->
+  <style>
+    @keyframes slide {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  
+    .animate-slide {
+      animation: slide 25s linear infinite;
+    }
+  
+    .slider:hover .animate-slide {
+      animation-play-state: paused;
+    }
+  </style>
+  

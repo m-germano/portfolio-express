@@ -1,0 +1,169 @@
+<section class="text-white px-6 py-16" id="contato">
+  <h2 class="text-4xl text-purple-500 font-bold text-center mb-10">Contate-me</h2>
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+    <!-- Formulário -->
+    <form id="contact-form" method="POST" class="space-x-2" action="/">
+      <input
+        type="text"
+        name="name"
+        placeholder="NAME"
+        class="w-full px-4 py-2 mb-2 bg-transparent border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+        required
+      />
+      <input
+        type="email"
+        name="email"
+        placeholder="EMAIL"
+        class="w-full px-4 py-2 mb-2 bg-transparent border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+        required
+      />
+      <input
+        type="text"
+        name="subject"
+        placeholder="ASSUNTO"
+        class="w-full px-4 py-2 mb-2 bg-transparent border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+        required
+      />
+      <textarea
+        name="message"
+        rows="6"
+        placeholder="MESSAGE"
+        class="w-full px-4 py-2 bg-transparent border border-gray-400 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+        required
+      ></textarea>
+      <button
+        type="submit"
+        class="w-full bg-purple-500 hover:bg-purple-700 text-white py-2 rounded flex items-center justify-center space-x-2 transition"
+      >
+        <i class="fas fa-paper-plane"></i>
+        <span>Enviar</span>
+      </button>
+    </form>
+
+    <!-- Informações de contato -->
+    <div class="space-y-6">
+      <div class="space-y-4">
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-map-marker-alt text-purple-500"></i>
+          <span>São José dos Campos - SP</span>
+        </div>
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-phone text-purple-500"></i>
+          <span>(12) 98116-5109</span>
+        </div>
+        <div class="flex items-center space-x-3">
+          <i class="fas fa-envelope text-purple-500"></i>
+          <span>silvaa.matheus112@gmail.com</span>
+        </div>
+      </div>
+
+      <hr class="border-gray-600" />
+
+      <div class="flex space-x-6 justify-start">
+        <a href="#" class="bg-gray-800 hover:bg-purple-600 p-3 rounded-full">
+          <i class="fab fa-github text-white"></i>
+        </a>
+        <a href="#" class="bg-gray-800 hover:bg-purple-600 p-3 rounded-full">
+          <i class="fab fa-twitter text-white"></i>
+        </a>
+        <a href="#" class="bg-gray-800 hover:bg-purple-600 p-3 rounded-full">
+          <i class="fab fa-instagram text-white"></i>
+        </a>
+      </div>
+
+      <hr class="border-gray-600" />
+    </div>
+  </div>
+
+  <!-- Modal de Sucesso -->
+  <div
+    id="modal-success"
+    class="z-50 opacity-0 pointer-events-none fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300"
+  >
+    <div class="bg-white p-6 rounded shadow-lg text-center">
+      <h2 class="text-green-500 text-xl font-bold">Mensagem enviada com sucesso!</h2>
+      <p class="mt-4">Sua mensagem foi enviada e será respondida em breve.</p>
+      <button
+        onclick="closeModal('success')"
+        class="mt-6 bg-green-500 text-white px-4 py-2 rounded"
+      >
+        Fechar
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal de Erro -->
+  <div
+    id="modal-error"
+    class="z-50 opacity-0 pointer-events-none fixed inset-0 bg-gray-800 bg-opacity-50 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300"
+  >
+    <div class="bg-white p-6 rounded shadow-lg text-center">
+      <h2 class="text-red-500 text-xl font-bold">Erro ao enviar mensagem</h2>
+      <p class="mt-4">Algo deu errado, por favor tente novamente.</p>
+      <button
+        onclick="closeModal('error')"
+        class="mt-6 bg-red-500 text-white px-4 py-2 rounded"
+      >
+        Fechar
+      </button>
+    </div>
+  </div>
+</section>
+
+
+
+<script>
+  const form = document.getElementById("contact-form");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const formData = {
+      name: form.name.value,
+      email: form.email.value,
+      subject: form.subject.value,
+      message: form.message.value,
+    };
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      // Volta para o topo
+      window.scrollTo(0, 0);
+
+      if (result.success) {
+        showModal("success");
+      } else {
+        showModal("error");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar:", error);
+      showModal("error");
+    }
+  });
+
+  function showModal(type) {
+    const modal = document.getElementById(`modal-${type}`);
+    modal.classList.remove("opacity-0", "pointer-events-none");
+    modal.classList.add("opacity-100", "pointer-events-auto");
+
+    setTimeout(() => {
+      closeModal(type);
+      location.reload(); // Recarrega a página após 3s
+    }, 3000);
+  }
+
+  function closeModal(type) {
+    const modal = document.getElementById(`modal-${type}`);
+    modal.classList.remove("opacity-100", "pointer-events-auto");
+    modal.classList.add("opacity-0", "pointer-events-none");
+  }
+</script>

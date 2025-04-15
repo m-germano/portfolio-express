@@ -1,5 +1,5 @@
 <section
-  class="w-full h-[85vh] bg-[#0f0f0f] text-white flex flex-col items-center justify-center px-8"
+  class="w-full h-[85vh] bg-[#0f0f0f] text-white flex flex-col items-center justify-center px-8 relative"
 >
   <div
     class="flex flex-col md:flex-row items-center justify-between max-w-6xl w-full"
@@ -7,14 +7,15 @@
     <!-- Text Section -->
     <div class="md:w-1/2 space-y-4">
       <p class="text-sm tracking-widest text-gray-400">Software Developer</p>
+
+      <!-- Efeito de digitação -->
       <h1 class="text-4xl sm:text-5xl font-bold leading-tight">
-        Hello I'm <br />
-        <span class="text-purple-500">Matheus Germano</span>
+        <span id="hello" class="text-white"></span><br />
+        <span id="name" class="text-purple-500"></span>
       </h1>
-      <p class="text-gray-400">Excel expert</p>
-      <p class="text-gray-500">
-        Proficient in various programming languages and technologies.
-      </p>
+
+      <p class="text-gray-400">"Simplicity is the soul of efficiency."</p>
+      <p class="text-gray-500">– Austin Freeman</p>
 
       <!-- Botões -->
       <div class="mt-6 flex items-center space-x-4">
@@ -29,14 +30,16 @@
           href="https://github.com/m-germano"
           target="_blank"
           class="text-purple-500 hover:text-white text-2xl"
-          ><i class="fab fa-github"></i
-        ></a>
+        >
+          <i class="fab fa-github"></i>
+        </a>
         <a
           href="https://www.linkedin.com/in/math-germano/"
           target="_blank"
           class="text-purple-500 hover:text-white text-2xl"
-          ><i class="fab fa-linkedin"></i
-        ></a>
+        >
+          <i class="fab fa-linkedin"></i>
+        </a>
       </div>
     </div>
 
@@ -56,4 +59,37 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const helloText = "Hello I'm";
+      const nameText = "Matheus Germano";
+
+      const helloSpan = document.getElementById("hello");
+      const nameSpan = document.getElementById("name");
+
+      let i = 0;
+
+      function typeHello() {
+        if (i < helloText.length) {
+          helloSpan.textContent += helloText.charAt(i);
+          i++;
+          setTimeout(typeHello, 80);
+        } else {
+          i = 0;
+          setTimeout(typeName, 300); // pequena pausa antes do nome
+        }
+      }
+
+      function typeName() {
+        if (i < nameText.length) {
+          nameSpan.textContent += nameText.charAt(i);
+          i++;
+          setTimeout(typeName, 80);
+        }
+      }
+
+      typeHello();
+    });
+  </script>
 </section>

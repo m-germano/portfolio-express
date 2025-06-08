@@ -31,9 +31,7 @@ Este é um portfólio acadêmico desenvolvido em **Node.js + Express + EJS**, co
 
 - Cadastro e login de usuários com autenticação JWT.
 - Login via **email ou nome de usuário**.
-- Criação automática de um usuário **admin** com:
-  - **Email**: `admin@admin.com`
-  - **Senha**: `admin` (com hash)
+- Criação automática de um usuário **admin**
 - Interface protegida para **admin gerenciar projetos**.
 - Envio de mensagens de contato com persistência no banco.
 - Layout responsivo com **TailwindCSS**.
@@ -125,16 +123,6 @@ npm run dev
 ```
 http://localhost:3000
 ```
-
----
-
-## ✅ Acesso Padrão
-
-- Admin:
-  - **Email**: `admin@admin.com`
-  - **Senha**: `admin`
-
-> O usuário admin é criado automaticamente na primeira execução do servidor, caso ainda não exista.
 
 ---
 

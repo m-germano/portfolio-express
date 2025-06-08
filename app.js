@@ -72,12 +72,30 @@ app.use((req, res, next) => {
 app.use("/", require("./routes/authRoutes"));
 app.use("/users", require("./routes/userRoutes"));
 app.use("/messages", require("./routes/messageRoutes"));
+app.use("/projetos", require("./routes/projetosRoutes"));
 
 // Página inicial
-app.get("/", (req, res) => {
-  const quote = "Simplicity is the soul of efficiency.";
-  const quoteAuthor = "Austin Freeman";
-  res.render("pages/index", { quote, quoteAuthor, status: null });
+app.get("/", async (req, res) => {
+  try {
+    const projetos = await prisma.projeto.findMany();
+    const quote = "Simplicity is the soul of efficiency.";
+    const quoteAuthor = "Austin Freeman";
+
+    res.render("pages/index", {
+      quote,
+      quoteAuthor,
+      status: null,
+      projetos, // passa os projetos para o EJS
+    });
+  } catch (error) {
+    console.error("Erro ao buscar projetos:", error);
+    res.render("pages/index", {
+      quote: "Erro ao carregar projetos.",
+      quoteAuthor: "",
+      status: "error",
+      projetos: [], // fallback para evitar erro no EJS
+    });
+  }
 });
 
 // 404 handler

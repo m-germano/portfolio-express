@@ -29,3 +29,12 @@ model Message {
   user      User?    @relation(fields: [userId], references: [id])
   userId    Int?
 }
+
+model Projeto {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  descricao String
+  imagem    String?   // opcional para URL da imagem
+  githubUrl String?   // opcional para link do projeto
+  createdAt DateTime @default(now())
+}

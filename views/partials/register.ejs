@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registrar | Meu Portfólio</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              dark: "#0f0f0f",
+              darker: "#0a0a0a",
+              darkBorder: "#252525",
+              purpleAccent: "#AD46FF",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .input-icon:focus + .input-icon i {
+        color: #c084fc;
+      }
+    </style>
+  </head>
+
+  <body class="bg-dark text-white min-h-screen flex flex-col">
+    <%- include('../partials/header') %>
+
+    <main
+      class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mt-16 pb-20"
+    >
+      <div class="w-full max-w-md space-y-10">
+        <div class="text-center">
+          <div
+            class="mx-auto bg-gradient-to-r from-purple-600 to-pink-500 w-20 h-20 rounded-full flex items-center justify-center mb-6"
+          >
+            <i class="fas fa-user-plus text-3xl text-white"></i>
+          </div>
+          <h2
+            class="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent"
+          >
+            Criar nova conta
+          </h2>
+          <p class="mt-4 text-base text-gray-400">
+            Já tem uma conta?
+            <a
+              href="/login"
+              class="font-medium text-purpleAccent hover:text-purple-300 transition-colors duration-300"
+            >
+              Faça login
+            </a>
+          </p>
+        </div>
+
+        <form class="mt-10 space-y-8" action="/register" method="POST">
+          <div class="rounded-md shadow-sm space-y-6">
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+              >
+                <i class="fas fa-user-tag text-gray-400 text-lg"></i>
+              </div>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                required
+                class="appearance-none block w-full pl-12 pr-4 py-4 bg-[#1a1a1a] border border-darkBorder rounded-xl placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purpleAccent focus:border-transparent transition-all duration-300"
+                placeholder="Nome de usuário"
+              />
+            </div>
+
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+              >
+                <i class="fas fa-envelope text-gray-400 text-lg"></i>
+              </div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                class="appearance-none block w-full pl-12 pr-4 py-4 bg-[#1a1a1a] border border-darkBorder rounded-xl placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purpleAccent focus:border-transparent transition-all duration-300"
+                placeholder="Email"
+              />
+            </div>
+
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+              >
+                <i class="fas fa-lock text-gray-400 text-lg"></i>
+              </div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                class="appearance-none block w-full pl-12 pr-4 py-4 bg-[#1a1a1a] border border-darkBorder rounded-xl placeholder-gray-400 text-white focus:outline-none focus:ring-2 focus:ring-purpleAccent focus:border-transparent transition-all duration-300"
+                placeholder="Senha"
+              />
+            </div>
+          </div>
+
+          <div class="flex items-start mt-6">
+            <div class="flex items-center h-5">
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                required
+                class="h-5 w-5 text-purpleAccent focus:ring-purpleAccent border-darkBorder rounded bg-[#1a1a1a]"
+              />
+            </div>
+            <label for="terms" class="ml-3 block text-sm text-gray-400">
+              Eu concordo com os
+              <a
+                href="#"
+                onclick="openTermsModal(); return false;"
+                class="text-purpleAccent hover:text-purple-300 transition-colors duration-300"
+              >
+                Termos de Serviço
+              </a>
+            </label>
+          </div>
+
+          <div class="mt-8">
+            <button
+              type="submit"
+              class="group relative w-full flex justify-center py-4 px-4 border border-transparent text-base font-medium rounded-xl text-white bg-gradient-to-r from-purpleAccent to-purple-600 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purpleAccent transition-all duration-300 shadow-lg hover:shadow-purpleAccent/30 transform hover:-translate-y-0.5"
+            >
+              <span class="absolute left-0 inset-y-0 flex items-center pl-5">
+                <i class="fas fa-user-plus text-purple-200 text-lg"></i>
+              </span>
+              Registrar
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <!-- Modal Termos de Serviço -->
+    <div
+      id="termsModal"
+      class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center"
+    >
+      <div
+        class="bg-[#1a1a1a] border border-darkBorder rounded-xl max-w-lg w-full p-6 relative shadow-2xl"
+      >
+        <button
+          onclick="closeTermsModal()"
+          class="absolute top-3 right-3 text-gray-400 hover:text-white text-xl transition"
+        >
+          &times;
+        </button>
+        <h3 class="text-xl font-semibold mb-4 text-purpleAccent">
+          Termos de Serviço
+        </h3>
+        <div
+          class="max-h-80 overflow-y-auto text-sm text-gray-300 space-y-4 text-justify leading-relaxed pr-1"
+        >
+          <p>
+            Bem-vindo ao <strong>Meu Portfólio</strong>. Ao acessar este site,
+            você concorda em cumprir e estar legalmente vinculado aos termos e
+            condições abaixo. Caso não concorde com estes termos, recomendamos
+            que não utilize este site.
+          </p>
+
+          <h4 class="text-purple-300 font-semibold">1. Uso do Site</h4>
+          <p>
+            Este site tem como objetivo apresentar projetos pessoais,
+            experiências profissionais e conteúdos desenvolvidos por mim. É
+            proibido o uso deste conteúdo para fins comerciais ou de plágio sem
+            autorização prévia por escrito.
+          </p>
+
+          <h4 class="text-purple-300 font-semibold">
+            2. Propriedade Intelectual
+          </h4>
+          <p>
+            Todo o conteúdo deste site (textos, códigos, imagens, ícones, etc.)
+            é de minha autoria ou devidamente licenciado. O uso não autorizado
+            pode violar leis de direitos autorais e outras legislações
+            aplicáveis.
+          </p>
+
+          <h4 class="text-purple-300 font-semibold">3. Responsabilidades</h4>
+          <p>
+            Esforço-me para manter as informações atualizadas e corretas, mas
+            não assumo responsabilidade por imprecisões, indisponibilidade
+            temporária ou erros ocasionais.
+          </p>
+
+          <h4 class="text-purple-300 font-semibold">4. Modificações</h4>
+          <p>
+            Os termos de uso podem ser atualizados periodicamente. Recomenda-se
+            a revisão frequente para estar ciente de eventuais alterações.
+          </p>
+
+          <h4 class="text-purple-300 font-semibold">5. Contato</h4>
+          <p>
+            Em caso de dúvidas, entre em contato através do formulário
+            disponível na seção
+            <a
+              href="#contato"
+              class="text-purpleAccent underline hover:text-purple-300"
+              >Contato</a
+            >
+            deste site.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openTermsModal() {
+        document.getElementById("termsModal").classList.remove("hidden");
+        document.body.classList.add("overflow-hidden");
+      }
+
+      function closeTermsModal() {
+        document.getElementById("termsModal").classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+      }
+    </script>
+  </body>
+</html>

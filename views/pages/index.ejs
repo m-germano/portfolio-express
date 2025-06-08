@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Meu Portfólio</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              dark: "#0f0f0f",
+              darker: "#0a0a0a",
+              darkBorder: "#252525",
+              purpleAccent: "#AD46FF",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-dark text-white min-h-screen flex flex-col pt-20">
+    <%- include('../partials/header') %>
+
+    <main class="flex-grow">
+      <%- include('./frontpage') %> <%- include('./aboutme') %> <%-
+      include('./certificados') %> <%- include('./education') %> <%-
+      include('./habilidades') %> <%- include('./projetos') %> <%-
+      include('./contato') %>
+    </main>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

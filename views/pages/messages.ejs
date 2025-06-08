@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              dark: '#0f0f0f',
+              darker: '#0a0a0a',
+              darkBorder: '#252525',
+              purpleAccent: '#AD46FF',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-dark text-white min-h-screen flex flex-col">
+    <%- include('../partials/header') %>
+
+    <main class="flex-grow p-6 max-w-7xl mx-auto w-full pt-24"> <!-- Aumentado pt para 24 -->
+      <!-- Cabeçalho do Painel -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purpleAccent to-pink-500 bg-clip-text text-transparent">
+            Painel Administrativo
+          </h1>
+          <p class="text-gray-400 mt-2">Gerencie mensagens e usuários do sistema</p>
+        </div>
+        <div class="flex items-center bg-darker px-4 py-2 rounded-lg border border-darkBorder">
+          <i class="fas fa-user-shield text-purpleAccent mr-2"></i>
+          <span class="text-sm text-gray-300">
+            Logado como: <span class="text-purpleAccent font-medium"><%= user.username %></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Grid de Conteúdo -->
+      <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Seção de Mensagens -->
+        <div class="bg-darker rounded-2xl p-6 shadow-xl border border-darkBorder">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+            <h2 class="text-xl font-bold flex items-center">
+              <i class="fas fa-envelope mr-3 text-purpleAccent text-xl"></i>
+              Mensagens Recebidas
+            </h2>
+            <span class="bg-purple-900/30 text-purple-300 px-3 py-1.5 rounded-full text-sm flex items-center">
+              <i class="fas fa-inbox mr-1.5"></i>
+              <%= messages.length %> <%= messages.length === 1 ? 'mensagem' : 'mensagens' %>
+            </span>
+          </div>
+          
+          <% if (messages.length === 0) { %>
+            <div class="text-center py-8 px-4 rounded-xl bg-[#252525]/50 border border-darkBorder">
+              <i class="fas fa-inbox text-4xl mb-3 text-gray-400"></i>
+              <p class="text-gray-400">Nenhuma mensagem recebida.</p>
+            </div>
+          <% } else { %>
+            <ul class="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+              <% messages.forEach(msg => { %>
+                <li class="bg-[#252525] p-5 rounded-xl border-l-4 border-purpleAccent hover:bg-[#2d2d2d] transition-all duration-300 group">
+                  <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                      <div class="flex items-center justify-between">
+                        <p class="font-bold text-lg flex items-center">
+                          <i class="fas fa-tag mr-2 text-purpleAccent text-sm"></i>
+                          <%= msg.subject %>
+                        </p>
+                        <form action="/messages/<%= msg.id %>?_method=DELETE" method="POST" class="ml-3">
+                          <button type="submit" class="text-red-400 hover:text-white bg-red-600/10 hover:bg-red-600/30 p-2 rounded-full transition-all duration-200" title="Excluir mensagem">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </form>
+                      </div>
+                      
+                      <div class="flex flex-wrap items-center gap-2 mt-3">
+                        <span class="text-sm text-gray-400 bg-darker px-2.5 py-1 rounded-full">
+                          <i class="fas fa-user mr-1.5"></i> <%= msg.name %>
+                        </span>
+                        <span class="text-sm text-gray-400 bg-darker px-2.5 py-1 rounded-full">
+                          <i class="fas fa-envelope mr-1.5"></i> <%= msg.email %>
+                        </span>
+                        <span class="text-xs text-gray-500 bg-darker px-2 py-1 rounded-full">
+                          <i class="fas fa-clock mr-1"></i>
+                          <%= new Date(msg.createdAt).toLocaleDateString() %>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mt-4 p-3 bg-darker rounded-lg border border-darkBorder">
+                    <p class="text-gray-300 whitespace-pre-line"><%= msg.content %></p>
+                  </div>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+
+        <!-- Seção de Usuários -->
+        <div class="bg-darker rounded-2xl p-6 shadow-xl border border-darkBorder">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
+            <h2 class="text-xl font-bold flex items-center">
+              <i class="fas fa-users mr-3 text-purpleAccent text-xl"></i>
+              Usuários Registrados
+            </h2>
+            <span class="bg-purple-900/30 text-purple-300 px-3 py-1.5 rounded-full text-sm flex items-center">
+              <i class="fas fa-user-friends mr-1.5"></i>
+              <%= users.length %> <%= users.length === 1 ? 'usuário' : 'usuários' %>
+            </span>
+          </div>
+          
+          <% if (users.length === 0) { %>
+            <div class="text-center py-8 px-4 rounded-xl bg-[#252525]/50 border border-darkBorder">
+              <i class="fas fa-user-slash text-4xl mb-3 text-gray-400"></i>
+              <p class="text-gray-400">Nenhum usuário registrado.</p>
+            </div>
+          <% } else { %>
+            <ul class="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+              <% users.forEach(userItem => { %>
+                <li class="bg-[#252525] p-5 rounded-xl hover:bg-[#2d2d2d] transition-all duration-300 group">
+                  <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                      <div class="flex items-center">
+                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-purpleAccent to-pink-500 flex items-center justify-center text-sm font-bold mr-3">
+                          <%= userItem.username.charAt(0).toUpperCase() %>
+                        </div>
+                        <div>
+                          <p class="font-bold flex items-center">
+                            <%= userItem.username %>
+                            <% if (userItem.isAdmin) { %>
+                              <span class="ml-3 bg-purple-900/30 text-purple-300 px-2.5 py-0.5 rounded-full text-xs flex items-center">
+                                <i class="fas fa-crown mr-1.5"></i> Admin
+                              </span>
+                            <% } %>
+                          </p>
+                          <p class="text-sm text-gray-400 mt-1">
+                            <i class="fas fa-envelope mr-1.5"></i> <%= userItem.email %>
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div class="flex flex-wrap items-center gap-2 mt-3">
+                        <span class="text-xs text-gray-400 bg-darker px-2.5 py-1 rounded-full">
+                          <i class="fas fa-calendar mr-1.5"></i>
+                          Registrado em: <%= new Date(userItem.createdAt).toLocaleDateString() %>
+                        </span>
+                        <% if (userItem.lastLogin) { %>
+                          <span class="text-xs text-gray-400 bg-darker px-2.5 py-1 rounded-full">
+                            <i class="fas fa-sign-in-alt mr-1.5"></i>
+                            Último login: <%= new Date(userItem.lastLogin).toLocaleDateString() %>
+                          </span>
+                        <% } %>
+                      </div>
+                    </div>
+                    
+                    <% if (!userItem.isAdmin) { %>
+                      <form action="/users/<%= userItem.id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="text-red-400 hover:text-white bg-red-600/10 hover:bg-red-600/30 p-2 rounded-full transition-all duration-200" title="Remover usuário">
+                          <i class="fas fa-user-minus"></i>
+                        </button>
+                      </form>
+                    <% } %>
+                  </div>
+                </li>
+              <% }) %>
+            </ul>
+          <% } %>
+        </div>
+      </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+    <style>
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 10px;
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #6d28d9;
+        border-radius: 10px;
+      }
+      
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #7c3aed;
+      }
+      
+      /* Efeito de hover nos cards */
+      .group:hover .group-hover\:block {
+        display: block;
+      }
+    </style>
+  </body>
+</html>

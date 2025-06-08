@@ -1,35 +1,118 @@
-<header
-  class="w-full flex items-center justify-between p-5 shadow-2xl text-white px-30"
->
-  <h1 class="font-bold text-2xl">
-    <a href="/">MGS</a><span class="text-[#AD46FF]">.</span>
-  </h1>
+<header class="w-full bg-darker/95 shadow-lg fixed top-0 z-50 backdrop-blur-md border-b border-darkBorder">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo -->
+     <a href="/" class="flex items-center space-x-1 hover:opacity-80 transition duration-200">
+  <span class="text-white font-bold text-2xl tracking-tighter">MGS</span>
+  <span class="text-purpleAccent text-2xl">.</span>
+</a>
 
-  <nav class="flex space-x-6 items-center">
-    <a
-      href="#habilidades"
-      class="hover:text-purple-500 hover:underline transition duration-200"
-      >Skills</a
-    >
-    <a
-      href="#experience"
-      class="hover:text-purple-500 hover:underline transition duration-200"
-      >Experience</a
-    >
-    <a
-      href="#education"
-      class="hover:text-purple-500 hover:underline transition duration-200"
-      >Education</a
-    >
-    <a
-      href="#projetos"
-      class="hover:text-purple-500 hover:underline transition duration-200"
-      >Projects</a
-    >
-    <a
-      href="#contato"
-      class="bg-purple-500 text-white px-4 py-2 rounded-full flex items-center justify-center hover:bg-purple-600 transition duration-200"
-      >Contact Me</a
-    >
-  </nav>
+      <!-- Menu desktop -->
+      <nav class="hidden md:flex items-center justify-between flex-1 mx-10">
+        <div class="flex space-x-8">
+          <a href="/#habilidades" class="text-gray-300 hover:text-purpleAccent px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5 flex items-center">
+            <i class="fas fa-code mr-2"></i> Skills
+          </a>
+          <a href="/#experience" class="text-gray-300 hover:text-purpleAccent px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5 flex items-center">
+            <i class="fas fa-briefcase mr-2"></i> Experience
+          </a>
+          <a href="/#education" class="text-gray-300 hover:text-purpleAccent px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5 flex items-center">
+            <i class="fas fa-graduation-cap mr-2"></i> Education
+          </a>
+          <a href="/#projetos" class="text-gray-300 hover:text-purpleAccent px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:bg-white/5 flex items-center">
+            <i class="fas fa-project-diagram mr-2"></i> Projects
+          </a>
+        </div>
+
+        <!-- Ações / Login -->
+        <div class="flex items-center space-x-6">
+          <% if (user) { %>
+            <div class="flex items-center space-x-4">
+              <% if (user.isAdmin) { %>
+                <a href="/messages" class="text-gray-300 hover:text-purpleAccent p-2 rounded-full hover:bg-white/5 transition-all duration-200" title="Painel Admin">
+                  <i class="fas fa-shield-alt"></i>
+                </a>
+              <% } %>
+              <form action="/logout" method="POST">
+                <button class="text-gray-300 hover:text-white border border-purpleAccent px-5 py-2 rounded-full text-sm font-medium hover:bg-purpleAccent/10 transition-all duration-200 flex items-center">
+                  <i class="fas fa-sign-out-alt mr-2"></i> Sair
+                </button>
+              </form>
+              <div class="h-10 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-sm font-bold text-white cursor-pointer hover:ring-2 hover:ring-purpleAccent transition-all duration-200">
+                <%= user.username.charAt(0).toUpperCase() %>
+              </div>
+            </div>
+          <% } else { %>
+            <a href="/login" class="text-gray-300 hover:text-white px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 hover:bg-white/5">
+              Login
+            </a>
+            <a href="/register" class="text-white bg-gradient-to-r from-purpleAccent to-purple-600 px-6 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-purple-500/20">
+              Registrar
+            </a>
+          <% } %>
+        </div>
+      </nav>
+
+      <!-- Menu mobile botão -->
+      <div class="md:hidden">
+        <button onclick="toggleMobileMenu()" class="text-gray-300 hover:text-purpleAccent p-2 rounded-lg hover:bg-white/5 transition-all duration-200 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div id="mobile-menu" class="hidden md:hidden bg-darker border-t border-darkBorder px-6 py-4">
+    <div class="space-y-3">
+      <a href="#habilidades" class="block text-gray-300 hover:text-purpleAccent px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+        <i class="fas fa-code mr-3"></i> Skills
+      </a>
+      <a href="#experience" class="block text-gray-300 hover:text-purpleAccent px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+        <i class="fas fa-briefcase mr-3"></i> Experience
+      </a>
+      <a href="#education" class="block text-gray-300 hover:text-purpleAccent px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+        <i class="fas fa-graduation-cap mr-3"></i> Education
+      </a>
+      <a href="#projetos" class="block text-gray-300 hover:text-purpleAccent px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+        <i class="fas fa-project-diagram mr-3"></i> Projects
+      </a>
+    </div>
+
+    <div class="border-t border-darkBorder mt-4 pt-4 space-y-3">
+      <% if (user) { %>
+        <div class="flex items-center space-x-3 px-4 py-2">
+          <div class="h-9 w-9 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-sm font-bold text-white">
+            <%= user.username.charAt(0).toUpperCase() %>
+          </div>
+          <span class="text-white"><%= user.username %></span>
+        </div>
+        <% if (user.isAdmin) { %>
+          <a href="/messages" class="block text-gray-300 hover:text-purpleAccent px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+            <i class="fas fa-shield-alt mr-3"></i> Painel Admin
+          </a>
+        <% } %>
+        <form action="/logout" method="POST">
+          <button class="block w-full text-left text-gray-300 hover:text-purpleAccent px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+            <i class="fas fa-sign-out-alt mr-3"></i> Sair
+          </button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="block text-center text-gray-300 hover:text-white border border-gray-600 px-4 py-3 rounded-lg hover:bg-white/5 transition-all duration-200">
+          Login
+        </a>
+        <a href="/register" class="block text-center text-white bg-gradient-to-r from-purpleAccent to-purple-600 px-4 py-3 rounded-lg hover:opacity-90 transition-all duration-200">
+          Registrar
+        </a>
+      <% } %>
+    </div>
+  </div>
 </header>
+
+<script>
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+    document.body.classList.toggle('overflow-hidden');
+  }
+</script>

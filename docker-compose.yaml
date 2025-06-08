@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: portfolio-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: always
+    environment:
+      NODE_ENV: production
+    networks:
+      - portfolio-net
+
+  db:
+    image: postgres:15-alpine
+    container_name: portfolio-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - portfolio-net
+
+volumes:
+  pgdata:
+
+networks:
+  portfolio-net:

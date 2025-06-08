@@ -45,7 +45,7 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
-// GET: Painel Admin (mensagens + usuários)
+// GET: Painel Admin (mensagens + usuários formatados)
 router.get("/", authenticateToken, requireAdmin, async (req, res) => {
   try {
     const messages = await prisma.message.findMany({
@@ -53,11 +53,28 @@ router.get("/", authenticateToken, requireAdmin, async (req, res) => {
     });
 
     const users = await prisma.user.findMany({
-      select: { id: true, username: true, email: true, isAdmin: true },
       orderBy: { createdAt: "desc" },
     });
 
-    res.render("pages/messages", { messages, users });
+    // Formatar as datas
+    const formattedMessages = messages.map((msg) => ({
+      ...msg,
+      formattedCreatedAt: new Date(msg.createdAt).toLocaleDateString("pt-BR"),
+    }));
+
+    const formattedUsers = users.map((user) => ({
+      ...user,
+      formattedCreatedAt: new Date(user.createdAt).toLocaleDateString("pt-BR"),
+      formattedLastLogin: user.lastLogin
+        ? new Date(user.lastLogin).toLocaleDateString("pt-BR")
+        : null,
+    }));
+
+    res.render("pages/messages", {
+      user: req.user,
+      users: formattedUsers,
+      messages: formattedMessages,
+    });
   } catch (error) {
     console.error("Erro ao carregar o painel admin:", error);
     res.status(500).send("Erro interno do servidor.");
